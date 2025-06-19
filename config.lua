@@ -7,7 +7,7 @@ Config = {
         Permission = "", -- The specific permission within the category (e.g., "BypassNoclip", "AdminMenuAccess", etc.) All permissions can be found here: https://docs.fiveguard.net/permission-system/ace-permissions
         IgnoreStaticPermissions = false, -- Keep false unless you know what you are doing
         Debug = false, -- DEBUG (Set to true to enable debug output/logging)
-        Webhook = false -- Replace with your Discord webhook URL to log permission changes (e.g., "https://discord.com/api/webhooks/1234567890/abcdefghijklmnopqrstuvwxyz")
+        Webhook = false -- Replace with your Discord webhook URL to log permission changes (e.g., "ttps://discord.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN")
     },
 }
 
