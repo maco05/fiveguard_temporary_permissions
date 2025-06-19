@@ -1,10 +1,6 @@
 # Fiveguard Temporary Permissions
 
-----------------------------------------------------------------------------
-
 This resource will help you to manage temporary permissions for Fiveguard.
-
-----------------------------------------------------------------------------
 
 # Installation
 
@@ -12,15 +8,11 @@ This resource will help you to manage temporary permissions for Fiveguard.
 - Extract it
 - Configure it as you prefer in the config.lua file
 
-----------------------------------------------------------------------------
-
 # Features
 
 **Permissions**
 
 Setup temporary permissions for every resource that is causing false bans.
-
-----------------------------------------------------------------------------
 
 # Credits
 
