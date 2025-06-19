@@ -5,7 +5,7 @@ This resource will help you to manage temporary permissions for Fiveguard.
 # Installation
 
 - [Download](https://github.com/maco05/fiveguard_temporary_permissions/archive/refs/heads/main.zip) the script
-- Extract it
+- Extract and remove the ```-main``` at the end of the folder name
 - Configure it as you prefer in the config.lua file
 
 # Features
