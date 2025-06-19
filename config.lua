@@ -23,5 +23,3 @@ Config.IgnoreStaticPermissions = false
 
 -- Debug
 Config.Debug = false  -- Set to true to enable debug output/logging
-
-test
