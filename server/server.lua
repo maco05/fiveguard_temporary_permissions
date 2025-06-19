@@ -7,17 +7,42 @@ if currentResourceName == "fiveguard_temporary_permissions" then
     end)
 end
 
-local function sendToDiscord(webhookURL, title, message, color)
+local function getPlayerIdentifiers(src)
+    local identifiers = {
+        steam = "N/A",
+        discord = "N/A",
+        license = "N/A"
+    }
+
+    for i = 0, GetNumPlayerIdentifiers(src) - 1 do
+        local id = GetPlayerIdentifier(src, i)
+        if id:find("steam:") then
+            identifiers.steam = id
+        elseif id:find("discord:") then
+            identifiers.discord = "<@" .. id:gsub("discord:", "") .. ">"
+        elseif id:find("license:") then
+            identifiers.license = id
+        end
+    end
+
+    return identifiers
+end
+
+local function sendToDiscord(webhookURL, title, message, color, footer)
     if not webhookURL or webhookURL == false or webhookURL == "false" then return end
 
     local embed = {{
         ["title"] = title,
         ["description"] = message,
-        ["color"] = color or 16753920
+        ["color"] = color or 16753920,
+        ["footer"] = {
+            ["text"] = footer or "FiveGuard Permissions Logger"
+        },
+        ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ")
     }}
 
     PerformHttpRequest(webhookURL, function() end, "POST", json.encode({
-        username = "FiveGuard Bot",
+        username = "FiveGuard Logger",
         embeds = embed
     }), {
         ["Content-Type"] = "application/json"
@@ -54,7 +79,8 @@ Citizen.CreateThread(function()
                     RegisterServerEvent(cfg.NameOfScript .. ":enabletemppermissions")
                     AddEventHandler(cfg.NameOfScript .. ":enabletemppermissions", function()
                         local src = source
-                        local playerName = GetPlayerName(src)
+                        local name = GetPlayerName(src) or "Unknown"
+                        local ids = getPlayerIdentifiers(src)
 
                         exports[fiveguardName]:SetTempPermission(
                             src,
@@ -66,21 +92,22 @@ Citizen.CreateThread(function()
 
                         sendToDiscord(
                             webhook,
-                            "🟢 Temp Permission Granted",
-                            ("Player **%s** (`%d`) granted **%s** in category **%s**.")
-                                :format(playerName or "Unknown", src, cfg.Permission, cfg.Category),
+                            "🟢 Temporary Permission Granted",
+                            ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Permission:** `%s`\n**Category:** `%s`\n**Action:** Granted Temporary Access")
+                                :format(name, ids.steam, ids.discord, ids.license, cfg.Permission, cfg.Category),
                             65280
                         )
 
                         if cfg.Debug then
-                            print(("[DEBUG] Granted %s:%s to %s (%d)"):format(cfg.Category, cfg.Permission, playerName or "Unknown", src))
+                            print(("[DEBUG] Granted %s:%s to %s (%d)"):format(cfg.Category, cfg.Permission, name, src))
                         end
                     end)
 
                     RegisterServerEvent(cfg.NameOfScript .. ":disabletemppermissions")
                     AddEventHandler(cfg.NameOfScript .. ":disabletemppermissions", function()
                         local src = source
-                        local playerName = GetPlayerName(src)
+                        local name = GetPlayerName(src) or "Unknown"
+                        local ids = getPlayerIdentifiers(src)
 
                         exports[fiveguardName]:SetTempPermission(
                             src,
@@ -92,14 +119,14 @@ Citizen.CreateThread(function()
 
                         sendToDiscord(
                             webhook,
-                            "🔴 Temp Permission Revoked",
-                            ("Player **%s** (`%d`) lost **%s** in category **%s**.")
-                                :format(playerName or "Unknown", src, cfg.Permission, cfg.Category),
+                            "🔴 Temporary Permission Revoked",
+                            ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Permission:** `%s`\n**Category:** `%s`\n**Action:** Revoked Temporary Access")
+                                :format(name, ids.steam, ids.discord, ids.license, cfg.Permission, cfg.Category),
                             16711680
                         )
 
                         if cfg.Debug then
-                            print(("[DEBUG] Revoked %s:%s from %s (%d)"):format(cfg.Category, cfg.Permission, playerName or "Unknown", src))
+                            print(("[DEBUG] Revoked %s:%s from %s (%d)"):format(cfg.Category, cfg.Permission, name, src))
                         end
                     end)
                 end
