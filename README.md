@@ -18,10 +18,10 @@ Setup temporary permissions for every resource that is causing false bans.
 
 Prevent bans and allow your players to get fun without making your code for temporany permissions
 
--JG-Dealerships
--RTX Themepark
--Rcore Clothing
--Rcore LunaPark
+- JG-Dealerships
+- RTX Themepark
+- Rcore Clothing
+- Rcore LunaPark
 
 # Credits
 
