@@ -12,4 +12,8 @@ Config = {
 }
 
 -- Replace with the actual resource name for the FiveGuard export (e.g., "fiveguard")
-Config.FiveguardName = ""
+Config.FiveguardName = "auto"
+
+-- Premade temporary permissions
+Config.RcoreClothing = false -- Set true if using Rcore_Clothing
+Config.RcoreLunarPark = false -- Set true if using Rcore_LunarPark
