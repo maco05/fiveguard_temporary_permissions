@@ -14,7 +14,6 @@ local function getFiveguardName()
     return nil
 end
 
--- Handle automatic detection
 if Config.FiveguardName == "auto" then
     Config.FiveguardName = getFiveguardName()
 
@@ -23,7 +22,7 @@ if Config.FiveguardName == "auto" then
         while not Config.FiveguardName and attempts < 20 do
             Wait(100)
             Config.FiveguardName = getFiveguardName()
-            attempts += 1
+            attempts = attempts + 1
         end
 
         if not Config.FiveguardName then
@@ -32,27 +31,26 @@ if Config.FiveguardName == "auto" then
                     cfg.enable = false
                 end
             end
-            Error('This is an addon for FiveGuard, but it was not found. Purchase it at https://fiveguard.net/#pricing')
+            print('This is an addon for FiveGuard, but it was not found. Purchase it at https://fiveguard.net/#pricing')
             return
         end
     end
 end
 
--- Validate FiveGuard resource
 local Fiveguard = Config.FiveguardName
 if Fiveguard then
-    Debug('Fiveguard is: ^3' .. Fiveguard .. '^0')
+    print('Fiveguard is: ^3' .. Fiveguard .. '^0')
     SetConvar('ac', Fiveguard)
 
     local attempts = 1
     ::recheckFG::
     if GetResourceState(Fiveguard) == 'started' then
-        Info('Fiveguard linked ^2successfully^0!')
+        print('Fiveguard linked ^2successfully^0!')
     else
         StartResource(Fiveguard)
-        Error(('Seems like you didn\'t start ^3%s^1 before this resource\nMake sure to start ^3%s^1 as first resource in your server.cfg for better compatibility with your scripts!'):format(Fiveguard, Fiveguard))
-        Info(('Trying to start ^3%s^0 (attempt: %d)^0'):format(Fiveguard, attempts))
-        attempts += 1
+        print(('Seems like you didn\'t start ^3%s^1 before this resource\nMake sure to start ^3%s^1 as first resource in your server.cfg for better compatibility with your scripts!'):format(Fiveguard, Fiveguard))
+        print(('Trying to start ^3%s^0 (attempt: %d)^0'):format(Fiveguard, attempts))
+        attempts = attempts + 1
         if attempts < 3 then goto recheckFG end
 
         for _, cfg in pairs(Config) do
@@ -60,12 +58,11 @@ if Fiveguard then
                 cfg.enable = false
             end
         end
-        Error(('Failed to start ^3%s^1 (attempts: %d)'):format(Fiveguard, attempts))
+        print(('Failed to start ^3%s^1 (attempts: %d)'):format(Fiveguard, attempts))
         return
     end
 end
 
--- Warn about resource name
 local currentResourceName = GetCurrentResourceName()
 if currentResourceName == "fiveguard_temporary_permissions" then
     Citizen.CreateThread(function()
@@ -74,7 +71,6 @@ if currentResourceName == "fiveguard_temporary_permissions" then
     end)
 end
 
--- Utility Functions
 local function getPlayerIdentifiers(src)
     local identifiers = {
         steam = "N/A",
@@ -121,11 +117,12 @@ local function isEmpty(value)
     return value == nil or value == ""
 end
 
--- Permission Event Handling
 local requiredFields = { "NameOfScript", "EventForStarting", "EventForStopping", "Category", "Permission" }
 
 Citizen.CreateThread(function()
     Wait(1000)
+
+    local resourcePath = GetResourcePath(GetCurrentResourceName()) or ""
 
     for key, cfg in pairs(Config) do
         if key ~= "FiveguardName" and type(cfg) == "table" then
@@ -150,7 +147,8 @@ Citizen.CreateThread(function()
 
                     exports[fiveguardName]:SetTempPermission(src, cfg.Category, cfg.Permission, true, cfg.IgnoreStaticPermissions)
 
-                    sendToDiscord(webhook,
+                    sendToDiscord(
+                        webhook,
                         "🟢 Temporary Permission Granted",
                         ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Permission:** `%s`\n**Category:** `%s`\n**Action:** Granted Temporary Access")
                             :format(name, ids.steam, ids.discord, ids.license, cfg.Permission, cfg.Category),
@@ -170,7 +168,8 @@ Citizen.CreateThread(function()
 
                     exports[fiveguardName]:SetTempPermission(src, cfg.Category, cfg.Permission, false, cfg.IgnoreStaticPermissions)
 
-                    sendToDiscord(webhook,
+                    sendToDiscord(
+                        webhook,
                         "🔴 Temporary Permission Revoked",
                         ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Permission:** `%s`\n**Category:** `%s`\n**Action:** Revoked Temporary Access")
                             :format(name, ids.steam, ids.discord, ids.license, cfg.Permission, cfg.Category),
@@ -182,8 +181,10 @@ Citizen.CreateThread(function()
                     end
                 end)
             end
-        elseif key ~= "FiveguardName" then
-            print(("\27[33m[FIVEGUARD CONFIG WARNING]: Section '%s' is not a valid table!\27[0m"):format(tostring(key)))
+        elseif key ~= "FiveguardName" and type(cfg) ~= "boolean" then
+            if not string.find(resourcePath, "server/addon") then
+                print(("\27[33m[FIVEGUARD CONFIG WARNING]: Section '%s' is not a valid table!\27[0m"):format(tostring(key)))
+            end
         end
     end
 end)

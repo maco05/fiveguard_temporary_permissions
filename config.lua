@@ -11,7 +11,7 @@ Config = {
     },
 }
 
--- Replace with the actual resource name for the FiveGuard export (e.g., "fiveguard")
+-- Leave auto if you want automatic detection otherwise replace with Fiveguard name
 Config.FiveguardName = "auto"
 
 -- Premade temporary permissions
