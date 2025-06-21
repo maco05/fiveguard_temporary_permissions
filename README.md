@@ -25,4 +25,4 @@ Prevent bans and allow your players to get fun without making your code for temp
 
 # Credits
 
-The script has been brought to you by the one and only unique FiveM anticheat, [fiveguard.net](https://fiveguard.net/) [Discord](https://www.discord.gg/fiveguard) Create by maco_05. Also thanks to [OffSey](https://github.com/OffSey/) for help with preconfigured permissions like RTX Tgemepark and both of preconfigured rcore scripts.
+The script has been brought to you by the one and only unique FiveM anticheat, [fiveguard.net](https://fiveguard.net/) [Discord](https://www.discord.gg/fiveguard) Create by maco_05. Also thanks to [OffSey](https://github.com/OffSey/) for help with preconfigured permissions like RTX Themepark and Rcore Clothing and Rcore LunaPark.
