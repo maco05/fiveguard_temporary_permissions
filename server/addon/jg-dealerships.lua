@@ -26,7 +26,7 @@ if Config.JGDealerships == true then
             src,                         -- Player source
             "Client",                    -- Category
             "BypassInvisible",         -- Permission
-            true,                        -- Allow?
+            false,                        -- Allow?
             false                        -- Ignore static permissions
         )
         exports[Config.FiveguardName]:SetTempPermission(
