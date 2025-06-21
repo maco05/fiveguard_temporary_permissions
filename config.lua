@@ -14,7 +14,7 @@ Config = {
 -- Leave auto if you want automatic detection otherwise replace with Fiveguard name
 Config.FiveguardName = "auto"
 
--- Premade temporary permissions
+-- Preconfigured temporary permissions
 Config.JGDealerships = false -- Set true if using jg-dealerships
 Config.RcorePrison = false -- Set true if using rcore_prison
 Config.RcoreClothing = false -- Set true if using Rcore_Clothing
