@@ -16,6 +16,7 @@ Config.FiveguardName = "auto"
 
 -- Preconfigured temporary permissions
 Config.JGDealerships = false -- Set true if using jg-dealerships
+Config.JGAdvancedGarages = false -- Set true if using jg-advancedgarages
 Config.RcorePrison = false -- Set true if using rcore_prison
 Config.RcoreClothing = false -- Set true if using Rcore_Clothing
 Config.RcoreLunarPark = false -- Set true if using Rcore_LunarPark
