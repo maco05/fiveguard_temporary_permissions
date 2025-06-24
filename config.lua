@@ -18,6 +18,7 @@ Config.FiveguardName = "auto"
 Config.JGDealerships = false -- Set true if using jg-dealerships
 Config.JGAdvancedGarages = false -- Set true if using jg-advancedgarages
 Config.RcorePrison = false -- Set true if using rcore_prison
+Config.LunarGarage = false -- Set true if using Lunar Garage
 Config.RcoreClothing = false -- Set true if using Rcore_Clothing
 Config.RcoreLunarPark = false -- Set true if using Rcore_LunarPark
 Config.RTXThemePark = false -- Set true if using RTX_Theme_Park

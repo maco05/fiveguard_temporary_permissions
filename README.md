@@ -21,6 +21,7 @@ Simply enable config options if using any listed resources bellow.
 - JG-Dealerships
 - JG-Advanced Garages
 - Rcore Prison
+- Lunar Garage
 - RTX Themepark
 - Rcore Clothing
 - Rcore LunaPark
