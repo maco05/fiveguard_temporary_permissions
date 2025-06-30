@@ -33,11 +33,6 @@ if Config.FiveguardName == "auto" then
             print("\n============= FiveGuard Temporary Permissions ==============")
             printServerMessage('This is an addon for FiveGuard, but it was not found.', "\27[31m")
             printServerMessage('Purchase it at https://fiveguard.net/#pricing', "\27[31m")
-            for _, cfg in pairs(Config) do
-                if type(cfg) == "table" and cfg.enable then
-                    cfg.enable = false
-                end
-            end
             print("===========================================\n")
             return
         end
@@ -47,13 +42,13 @@ end
 local Fiveguard = Config.FiveguardName
 if Fiveguard then
     print("\n============= FiveGuard Temporary Permissions ==============")
-    printServerMessage('Fiveguard is: ^3' .. Fiveguard .. '^0')
+    printServerMessage('Found FiveGuard with name: \27[32m' .. Fiveguard .. '\27[0m', "\27[0m")
     SetConvar('ac', Fiveguard)
 
     local attempts = 1
     ::recheckFG::
     if GetResourceState(Fiveguard) == 'started' then
-        printServerMessage('Fiveguard linked ^2successfully^0!', "\27[32m")
+        printServerMessage('FiveGuard linked ^2successfully^0!', "\27[32m")
     else
         StartResource(Fiveguard)
         printServerMessage(('Seems like you didn\'t start ^3%s^1 before this resource'):format(Fiveguard), "\27[33m")
