@@ -20,6 +20,8 @@ end
 
 print("\n============= FiveGuard Temporary Permissions ==============")
 
+local FiveguardFound = false -- Flag to track if FiveGuard was found
+
 if Config.FiveguardName == "auto" then
     Config.FiveguardName = getFiveguardName()
 
@@ -28,12 +30,19 @@ if Config.FiveguardName == "auto" then
         printServerMessage('Purchase it at https://fiveguard.net/#pricing', "\27[31m")
         print("===========================================\n")
         return
+    else
+        FiveguardFound = true
     end
 end
 
 local Fiveguard = Config.FiveguardName
 if Fiveguard then
-    printServerMessage('Found FiveGuard with name: \27[32m' .. Fiveguard .. '\27[0m', "\27[0m")
+    if FiveguardFound then -- Only print this if it was found via auto-detection
+        printServerMessage('Found FiveGuard with name: \27[32m' .. Fiveguard .. '\27[0m', "\27[0m")
+    else -- If Config.FiveguardName was manually set and valid
+        printServerMessage('Using FiveGuard with configured name: \27[32m' .. Fiveguard .. '\27[0m', "\27[0m")
+    end
+
     SetConvar('ac', Fiveguard)
 
     local attempts = 1
