@@ -18,30 +18,21 @@ local function printServerMessage(message, color)
     print(string.format("  %s%s\27[0m", color_code, message))
 end
 
+print("\n============= FiveGuard Temporary Permissions ==============")
+
 if Config.FiveguardName == "auto" then
     Config.FiveguardName = getFiveguardName()
 
     if not Config.FiveguardName then
-        local attempts = 0
-        while not Config.FiveguardName and attempts < 20 do
-            Wait(100)
-            Config.FiveguardName = getFiveguardName()
-            attempts = attempts + 1
-        end
-
-        if not Config.FiveguardName then
-            print("\n============= FiveGuard Temporary Permissions ==============")
-            printServerMessage('This is an addon for FiveGuard, but it was not found.', "\27[31m")
-            printServerMessage('Purchase it at https://fiveguard.net/#pricing', "\27[31m")
-            print("===========================================\n")
-            return
-        end
+        printServerMessage('This is an addon for FiveGuard, but it was not found.', "\27[31m")
+        printServerMessage('Purchase it at https://fiveguard.net/#pricing', "\27[31m")
+        print("===========================================\n")
+        return
     end
 end
 
 local Fiveguard = Config.FiveguardName
 if Fiveguard then
-    print("\n============= FiveGuard Temporary Permissions ==============")
     printServerMessage('Found FiveGuard with name: \27[32m' .. Fiveguard .. '\27[0m', "\27[0m")
     SetConvar('ac', Fiveguard)
 
@@ -73,7 +64,6 @@ local currentResourceName = GetCurrentResourceName()
 if currentResourceName == "fiveguard_temporary_permissions" then
     Citizen.CreateThread(function()
         Wait(120000)
-        print("\n============= FiveGuard Temporary Permissions ==============")
         printServerMessage("[FIVEGUARD WARNING]: Your resource name is 'fiveguard_temporary_permissions'. Please change it to something less obvious!", "\27[31m")
         print("===========================================\n")
     end)
@@ -138,9 +128,7 @@ Citizen.CreateThread(function()
 
             for _, field in ipairs(requiredFields) do
                 if isEmpty(cfg[field]) then
-                    print("\n============= FiveGuard Temporary Permissions ==============")
                     printServerMessage(string.format("[FIVEGUARD CONFIG ERROR]: '%s' is missing in section '%s'", field, key), "\27[31m")
-                    print("===========================================\n")
                     hasError = true
                 end
             end
@@ -166,9 +154,7 @@ Citizen.CreateThread(function()
                     )
 
                     if cfg.Debug then
-                        print("\n============= FiveGuard Temporary Permissions ==============")
                         printServerMessage(string.format("[DEBUG] Granted %s:%s to %s (%d)", cfg.Category, cfg.Permission, name, src))
-                        print("===========================================\n")
                     end
                 end)
 
@@ -189,17 +175,13 @@ Citizen.CreateThread(function()
                     )
 
                     if cfg.Debug then
-                        print("\n============= FiveGuard Temporary Permissions ==============")
                         printServerMessage(string.format("[DEBUG] Revoked %s:%s from %s (%d)", cfg.Category, cfg.Permission, name, src))
-                        print("===========================================\n")
                     end
                 end)
             end
         elseif key ~= "FiveguardName" and type(cfg) ~= "boolean" then
             if not string.find(resourcePath, "server/addon") then
-                print("\n============= FiveGuard Temporary Permissions ==============")
                 printServerMessage(string.format("[FIVEGUARD CONFIG WARNING]: Section '%s' is not a valid table!", tostring(key)), "\27[33m")
-                print("===========================================\n")
             end
         end
     end
@@ -214,7 +196,7 @@ Citizen.CreateThread(function()
         RTXThemePark = Config.RTXThemePark
     }
 
-    print("\n============= FiveGuard Temporary Permissions ==============")
+    print("============= Preconfigured options ============= \n")
     for name, status in pairs(presetConfigs) do
         local statusString = ""
         local color = ""
