@@ -187,4 +187,29 @@ Citizen.CreateThread(function()
             end
         end
     end
+
+    local presetConfigs = {
+        JGDealerships = Config.JGDealerships,
+        JGAdvancedGarages = Config.JGAdvancedGarages,
+        RcorePrison = Config.RcorePrison,
+        LunarGarage = Config.LunarGarage,
+        RcoreClothing = Config.RcoreClothing,
+        RcoreLunarPark = Config.RcoreLunarPark,
+        RTXThemePark = Config.RTXThemePark
+    }
+
+    print("\n ============= FiveGuard Temporary Permissions  =============")
+    for name, status in pairs(presetConfigs) do
+        local statusString = ""
+        local color = ""
+        if status == true then
+            statusString = "Enabled"
+            color = "\27[32m"
+        else
+            statusString = "Disabled"
+            color = "\27[31m"
+        end
+        print(string.format("  %s%s: %s\27[0m", color, name, statusString))
+    end
+    print("===========================================\n")
 end)
