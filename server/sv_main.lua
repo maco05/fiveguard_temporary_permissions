@@ -3,10 +3,8 @@ local function getFiveguardName()
     local resources = GetNumResources()
     for i = 0, resources - 1 do
         local resource = GetResourceByFindIndex(i)
-        -- Check if resource is valid before attempting to get metadata
         if resource then
             local files = GetNumResourceMetadata(resource, 'ac')
-            -- Corrected loop: iterate from 0 up to files - 1
             for j = 0, files - 1 do
                 local x = GetResourceMetadata(resource, 'ac', j)
                 if x and string.find(x, "fg") then
@@ -25,11 +23,10 @@ local function getPlayerIdentifiers(src)
         license = "N/A"
     }
 
-    -- Check if src is valid before calling GetNumPlayerIdentifiers
     if src and GetNumPlayerIdentifiers then
         for i = 0, GetNumPlayerIdentifiers(src) - 1 do
             local id = GetPlayerIdentifier(src, i)
-            if id then -- Ensure id is not nil
+            if id then
                 if id:find("steam:") then
                     identifiers.steam = id
                 elseif id:find("discord:") then
@@ -57,7 +54,6 @@ local function sendToDiscord(webhookURL, title, message, color, footer)
         ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ")
     }}
 
-    -- Ensure json.encode and PerformHttpRequest exist before calling
     if json and json.encode and PerformHttpRequest then
         PerformHttpRequest(webhookURL, function() end, "POST", json.encode({
             username = "FiveGuard Logger",
@@ -76,7 +72,7 @@ end
 
 local requiredFields = { "NameOfScript", "EventForStarting", "EventForStopping", "Category", "Permission" }
 
-local Fiveguard = nil -- This will hold the actual resolved FiveGuard name
+local Fiveguard = nil
 local fiveguardFound = false
 local fiveguardLinkedSuccessfully = false
 
@@ -103,20 +99,17 @@ if Config.FiveguardName == "auto" then
     end
 end
 
--- Now, 'Fiveguard' always holds the actual resource name (either found automatically or specified)
 if Fiveguard then
     fiveguardFound = true
     print(string.format('Fiveguard is: ^3%s^0', Fiveguard))
-    SetConvar('ac', Fiveguard) -- Set the convar for other resources to use
+    SetConvar('ac', Fiveguard)
 
     local attempts = 1
     ::recheckFG::
-    -- Ensure GetResourceState is a function
     if GetResourceState and GetResourceState(Fiveguard) == 'started' then
         print('Fiveguard linked ^2successfully^0!')
         fiveguardLinkedSuccessfully = true
     else
-        -- Ensure StartResource is a function
         if StartResource then
             StartResource(Fiveguard)
         end
@@ -125,7 +118,6 @@ if Fiveguard then
         attempts = attempts + 1
         if attempts < 3 then goto recheckFG end
 
-        -- Disable PreconfiguredPermissions if FiveGuard fails to start
         if type(Config) == "table" and type(Config.PreconfiguredPermissions) == "table" then
             for key, value in pairs(Config.PreconfiguredPermissions) do
                 if type(value) == "boolean" then
@@ -135,15 +127,14 @@ if Fiveguard then
         end
         print(('Failed to start ^3%s^1 (attempts: %d)'):format(Fiveguard, attempts))
         fiveguardLinkedSuccessfully = false
-        return -- Exit if FiveGuard cannot be started/linked
+        return
     end
 end
 
 local currentResourceName = GetCurrentResourceName()
-local isResourceNamedTemporary = false -- Added this flag for clearer logic below
+local isResourceNamedTemporary = false
 if currentResourceName == "fiveguard_temporary_permissions" then
     isResourceNamedTemporary = true
-    -- Ensure Citizen.CreateThread is a function before calling
     if Citizen and Citizen.CreateThread then
         Citizen.CreateThread(function()
             Wait(120000)
@@ -152,10 +143,9 @@ if currentResourceName == "fiveguard_temporary_permissions" then
     end
 end
 
--- Ensure Citizen.CreateThread is a function before calling
 if Citizen and Citizen.CreateThread then
     Citizen.CreateThread(function()
-        Wait(100) -- Changed from 1000 to 100, generally enough for initial setup
+        Wait(100)
 
         print("\n============= Fiveguard Temporary Permissions =============")
         if fiveguardFound then
@@ -168,12 +158,9 @@ if Citizen and Citizen.CreateThread then
         print("============= Preconfigured Permissions =============")
         local errorsFound = {}
 
-        -- It's common for Config to be defined in another file and loaded.
-        -- If Config is not found, this check catches it.
         if type(Config) ~= "table" then
             table.insert(errorsFound, "\27[31mCRITICAL ERROR: The 'Config' table was not found or is not a table. Ensure it's defined globally in another script and loaded before this resource.\27[0m")
         else
-            -- Check and display PreconfiguredPermissions
             if type(Config.PreconfiguredPermissions) == "table" then
                 for key, value in pairs(Config.PreconfiguredPermissions) do
                     if type(value) == "boolean" then
@@ -190,12 +177,10 @@ if Citizen and Citizen.CreateThread then
             local resourcePath = GetResourcePath(GetCurrentResourceName()) or ""
 
             for key, cfg in pairs(Config) do
-                -- Skip FiveguardName and the PreconfiguredPermissions table itself from validation
                 if key == "FiveguardName" or key == "PreconfiguredPermissions" then
                     goto continue_main_loop
                 end
 
-                -- Now, if it's a table, it MUST be a custom permission configuration
                 if type(cfg) == "table" then
                     local hasError = false
                     local missingFields = {}
@@ -212,17 +197,15 @@ if Citizen and Citizen.CreateThread then
                     end
 
                     if not hasError then
-                        local fiveguardName = Fiveguard -- Use the resolved Fiveguard name here
+                        local fiveguardName = Fiveguard
                         local webhook = cfg.Webhook or false
 
-                        -- Ensure RegisterServerEvent and AddEventHandler exist
                         if RegisterServerEvent and AddEventHandler then
                             RegisterServerEvent(cfg.NameOfScript .. ":enabletemppermissions")
-                            AddEventHandler(cfg.NameOfScript .. ":enabletemppermissions", function(src) -- Added src parameter
+                            AddEventHandler(cfg.NameOfScript .. ":enabletemppermissions", function(src)
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 
-                                -- Only attempt export call if FiveGuard was successfully found and linked and exports is available
                                 if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].SetTempPermission) == 'function' then
                                     exports[fiveguardName]:SetTempPermission(src, cfg.Category, cfg.Permission, true, cfg.IgnoreStaticPermissions)
 
@@ -243,11 +226,10 @@ if Citizen and Citizen.CreateThread then
                             end)
 
                             RegisterServerEvent(cfg.NameOfScript .. ":disabletemppermissions")
-                            AddEventHandler(cfg.NameOfScript .. ":disabletemppermissions", function(src) -- Added src parameter
+                            AddEventHandler(cfg.NameOfScript .. ":disabletemppermissions", function(src)
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 
-                                -- Only attempt export call if FiveGuard was successfully found and linked and exports is available
                                 if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].SetTempPermission) == 'function' then
                                     exports[fiveguardName]:SetTempPermission(src, cfg.Category, cfg.Permission, false, cfg.IgnoreStaticPermissions)
 
@@ -271,8 +253,6 @@ if Citizen and Citizen.CreateThread then
                         end
                     end
                 elseif not string.find(resourcePath, "server/addon") then
-                    -- This warning is for non-table entries in Config that aren't 'FiveguardName' or 'PreconfiguredPermissions'
-                    -- And if the resource isn't specifically an addon (where configs might vary)
                     table.insert(errorsFound, string.format("Section '%s' is not a valid table for a custom permission configuration, nor is it a recognized predefined boolean flag. Please check your Config file.", tostring(key)))
                 end
                 ::continue_main_loop::
