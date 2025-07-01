@@ -15,7 +15,7 @@ Config = {
 -- Leave auto if you want automatic detection otherwise replace with Fiveguard name
 Config.FiveguardName = "auto"
 
--- NEW STRUCTURE: Preconfigured temporary permissions are now inside a sub-table
+-- Preconfigured temporary permissions are now inside a sub-table
 Config.PreconfiguredPermissions = {
     JGDealerships = true, -- Set true if using jg-dealerships
     JGAdvancedGarages = false, -- Set true if using jg-advancedgarages
