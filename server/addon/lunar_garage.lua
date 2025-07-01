@@ -1,14 +1,13 @@
-if Config.LunarGarage == true then
-
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.LunarGarage == true then
     RegisterServerEvent("lunar_garage:enabletemppermissions")
     AddEventHandler("lunar_garage:enabletemppermissions", function()
         local src = source
         exports[Config.FiveguardName]:SetTempPermission(
-            src,                         -- Player source
-            "Vehicle",                    -- Category
-            "BypassVehiclePlateChanger",         -- Permission
-            true,                        -- Allow?
-            false                        -- Ignore static permissions
+            src,
+            "Vehicle",
+            "BypassVehiclePlateChanger",
+            true,
+            false
         )
     end)
 
@@ -16,14 +15,14 @@ if Config.LunarGarage == true then
     AddEventHandler("lunar_garage:disabletemppermissions", function()
         local src = source
         exports[Config.FiveguardName]:SetTempPermission(
-            src,                         -- Player source
-            "Vehicle",                    -- Category
-            "BypassVehiclePlateChanger",         -- Permission
-            false,                        -- Allow?
-            false                        -- Ignore static permissions
+            src,
+            "Vehicle",
+            "BypassVehiclePlateChanger",
+            false,
+            false
         )
     end)
 end
 
-if Config.LunarGarage == false then
-end    
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.LunarGarage == false then
+end

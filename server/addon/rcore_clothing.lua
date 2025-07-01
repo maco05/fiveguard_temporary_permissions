@@ -1,14 +1,13 @@
-if Config.RcoreClothing == true then
-
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.RcoreClothing == true then
     RegisterServerEvent("rcore_clothing:enabletemppermissions")
     AddEventHandler("rcore_clothing:enabletemppermissions", function()
         local src = source
         exports[Config.FiveguardName]:SetTempPermission(
-            src,                         -- Player source
-            "Client",                    -- Category
-            "BypassStealOutfit",         -- Permission
-            true,                        -- Allow?
-            false                        -- Ignore static permissions
+            src,
+            "Client",
+            "BypassStealOutfit",
+            true,
+            false
         )
     end)
 
@@ -25,5 +24,5 @@ if Config.RcoreClothing == true then
     end)
 end
 
-if Config.RcoreClothing == false then
-end    
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.RcoreClothing == false then
+end

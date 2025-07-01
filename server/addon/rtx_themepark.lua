@@ -1,5 +1,4 @@
-if Config.RTXThemePark == true then
-
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.RTXThemePark == true then
     RegisterServerEvent("rtx_themepark:enabletemppermissions")
     AddEventHandler("rtx_themepark:enabletemppermissions", function()
         local src = source
@@ -9,7 +8,7 @@ if Config.RTXThemePark == true then
             "BypassNoclip",
             true,
             false
-        )    
+        )
         exports[Config.FiveguardName]:SetTempPermission(
             src,
             "Misc",
@@ -28,5 +27,5 @@ if Config.RTXThemePark == true then
     end)
 end
 
-if Config.RTXThemePark == false then
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.RTXThemePark == false then
 end

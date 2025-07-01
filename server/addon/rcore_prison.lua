@@ -1,14 +1,13 @@
-if Config.RcorePrison == true then
-
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.RcorePrison == true then
     RegisterServerEvent("rcore_prison:enabletemppermissions")
     AddEventHandler("rcore_prison:enabletemppermissions", function()
         local src = source
         exports[Config.FiveguardName]:SetTempPermission(
-            src,                         -- Player source
-            "Client",                    -- Category
-            "BypassFreecam",         -- Permission
-            true,                        -- Allow?
-            false                        -- Ignore static permissions
+            src,
+            "Client",
+            "BypassFreecam",
+            true,
+            false
         )
     end)
 
@@ -25,5 +24,5 @@ if Config.RcorePrison == true then
     end)
 end
 
-if Config.RcorePrison == false then
-end    
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.RcorePrison == false then
+end

@@ -15,11 +15,13 @@ Config = {
 -- Leave auto if you want automatic detection otherwise replace with Fiveguard name
 Config.FiveguardName = "auto"
 
--- Preconfigured temporary permissions
-Config.JGDealerships = false -- Set true if using jg-dealerships
-Config.JGAdvancedGarages = false -- Set true if using jg-advancedgarages
-Config.RcorePrison = false -- Set true if using rcore_prison
-Config.LunarGarage = false -- Set true if using Lunar Garage
-Config.RcoreClothing = false -- Set true if using Rcore_Clothing
-Config.RcoreLunarPark = false -- Set true if using Rcore_LunarPark
-Config.RTXThemePark = false -- Set true if using RTX_Theme_Park
+-- NEW STRUCTURE: Preconfigured temporary permissions are now inside a sub-table
+Config.PreconfiguredPermissions = {
+    JGDealerships = true, -- Set true if using jg-dealerships
+    JGAdvancedGarages = false, -- Set true if using jg-advancedgarages
+    RcorePrison = false, -- Set true if using rcore_prison
+    LunarGarage = false, -- Set true if using Lunar Garage
+    RcoreClothing = false, -- Set true if using Rcore_Clothing
+    RcoreLunarPark = false, -- Set true if using Rcore_LunarPark
+    RTXThemePark = false -- Set true if using RTX_Theme_Park
+}

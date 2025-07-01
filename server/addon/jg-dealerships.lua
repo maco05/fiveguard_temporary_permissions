@@ -1,14 +1,13 @@
-if Config.JGDealerships == true then
-
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.JGDealerships == true then
     RegisterServerEvent("jg-dealerships:enabletemppermissions")
     AddEventHandler("jg-dealerships:enabletemppermissions", function()
         local src = source
         exports[Config.FiveguardName]:SetTempPermission(
-            src,                         -- Player source
-            "Client",                    -- Category
-            "BypassInvisible",         -- Permission
-            true,                        -- Allow?
-            false                        -- Ignore static permissions
+            src,
+            "Client",
+            "BypassInvisible",
+            true,
+            false
         )
          exports[Config.FiveguardName]:SetTempPermission(
             src,
@@ -23,11 +22,11 @@ if Config.JGDealerships == true then
     AddEventHandler("jg-dealerships:disabletemppermissions", function()
         local src = source
         exports[Config.FiveguardName]:SetTempPermission(
-            src,                         -- Player source
-            "Client",                    -- Category
-            "BypassInvisible",         -- Permission
-            false,                        -- Allow?
-            false                        -- Ignore static permissions
+            src,
+            "Client",
+            "BypassInvisible",
+            false,
+            false
         )
         exports[Config.FiveguardName]:SetTempPermission(
             src,
@@ -39,5 +38,5 @@ if Config.JGDealerships == true then
     end)
 end
 
-if Config.JGDealerships == false then
-end    
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.JGDealerships == false then
+end

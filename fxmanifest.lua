@@ -8,11 +8,11 @@ version '2.1.6'
 shared_script 'config.lua'
 
 client_scripts {
-    'client/client.lua',
+    'client/cl_main.lua',
     'client/addon/*.lua'
 }
 
 server_scripts {
-    'server/server.lua',
+    'server/sv_main.lua',
     'server/addon/*.lua'
 }
