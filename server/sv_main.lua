@@ -79,15 +79,15 @@ local fiveguardLinkedSuccessfully = false
 if Config.FiveguardName == "auto" then
     Config.FiveguardName = getFiveguardName()
 
-    if not Fiveguard then
+    if not Config.FiveguardName then
         local attempts = 0
-        while not Fiveguard and attempts < 20 do
+        while not Config.FiveguardName and attempts < 20 do
             Wait(100)
-            Fiveguard = getFiveguardName()
+            Config.FiveguardName = getFiveguardName()
             attempts = attempts + 1
         end
 
-        if not Fiveguard then
+        if not Config.FiveguardName then
             for _, cfg in pairs(Config) do
                 if type(cfg) == "table" and cfg.enable then
                     cfg.enable = false
