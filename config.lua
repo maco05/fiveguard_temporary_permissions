@@ -17,7 +17,7 @@ Config.FiveguardName = "auto"
 
 -- Preconfigured temporary permissions are now inside a sub-table
 Config.PreconfiguredPermissions = {
-    JGDealerships = true, -- Set true if using jg-dealerships
+    JGDealerships = false, -- Set true if using jg-dealerships
     JGAdvancedGarages = false, -- Set true if using jg-advancedgarages
     RcorePrison = false, -- Set true if using rcore_prison
     LunarGarage = false, -- Set true if using Lunar Garage
