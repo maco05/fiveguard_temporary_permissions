@@ -1,4 +1,3 @@
----@return string | nil
 local function getFiveguardName()
     local resources = GetNumResources()
     for i = 0, resources - 1 do
@@ -7,7 +6,7 @@ local function getFiveguardName()
             local files = GetNumResourceMetadata(resource, 'ac')
             for j = 0, files - 1 do
                 local x = GetResourceMetadata(resource, 'ac', j)
-                if x and string.find(x, "fg") then
+                if x and (string.find(string.lower(x), "fg") or string.find(string.lower(x), "fiveguard")) then
                     return resource
                 end
             end
@@ -76,26 +75,30 @@ local Fiveguard = nil
 local fiveguardFound = false
 local fiveguardLinkedSuccessfully = false
 
-if Config.FiveguardName == "auto" then
-    Config.FiveguardName = getFiveguardName()
+if Config and Config.FiveguardName then
+    if Config.FiveguardName == "auto" then
+        Fiveguard = getFiveguardName()
 
-    if not Config.FiveguardName then
-        local attempts = 0
-        while not Config.FiveguardName and attempts < 20 do
-            Wait(100)
-            Config.FiveguardName = getFiveguardName()
-            attempts = attempts + 1
-        end
-
-        if not Config.FiveguardName then
-            for _, cfg in pairs(Config) do
-                if type(cfg) == "table" and cfg.enable then
-                    cfg.enable = false
-                end
+        if not Fiveguard then
+            local attempts = 0
+            while not Fiveguard and attempts < 20 do
+                Wait(100)
+                Fiveguard = getFiveguardName()
+                attempts = attempts + 1
             end
-            print('This is an addon for FiveGuard, but it was not found. Purchase it at https://fiveguard.net/#pricing')
-            return
+
+            if not Fiveguard then
+                for _, cfg in pairs(Config) do
+                    if type(cfg) == "table" and cfg.enable then
+                        cfg.enable = false
+                    end
+                end
+                print('This is an addon for FiveGuard, but it was not found. Purchase it at https://fiveguard.net/#pricing')
+                return
+            end
         end
+    else
+        Fiveguard = Config.FiveguardName
     end
 end
 
