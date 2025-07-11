@@ -234,20 +234,52 @@ if Citizen and Citizen.CreateThread then
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 
-                                if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].RecordScreen) == 'function' then
-                                    exports[fiveguardName]:RecordScreen(src, duration, webhookURL)
+                                if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].recordPlayerScreen) == 'function' then
+                                    exports[fiveguardName]:recordPlayerScreen(
+                                        src,
+                                        duration,
+                                        function(playerSource, timeRecorded, success, webhook_url, recording_url)
+                                            local player_name_in_handler = GetPlayerName(playerSource) or "Unknown Player"
+                                            local ids_in_handler = getPlayerIdentifiers(playerSource)
+
+                                            if success then
+                                                sendToDiscord(
+                                                    webhook_url,
+                                                    "Screen Recording Completed",
+                                                    ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Duration:** %s seconds\n**Recording URL:** %s")
+                                                        :format(player_name_in_handler, ids_in_handler.steam, ids_in_handler.discord, ids_in_handler.license, timeRecorded, recording_url),
+                                                    3066993
+                                                )
+                                                if cfg.Debug then
+                                                    print(("[DEBUG] Server-side: Screen recording finished for %s (%d). Duration: %d. URL: %s"):format(player_name_in_handler, playerSource, timeRecorded, recording_url))
+                                                end
+                                            else
+                                                sendToDiscord(
+                                                    webhook_url,
+                                                    "Screen Recording Failed",
+                                                    ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Details:** Screen recording failed after %s seconds.")
+                                                        :format(player_name_in_handler, ids_in_handler.steam, ids_in_handler.discord, ids_in_handler.license, timeRecorded),
+                                                    16711680
+                                                )
+                                                if cfg.Debug then
+                                                    print(("[DEBUG] Server-side: Screen recording failed for %s (%d) after %d seconds."):format(player_name_in_handler, playerSource, timeRecorded))
+                                                end
+                                            end
+                                        end,
+                                        webhookURL
+                                    )
                                     sendToDiscord(
                                         webhookURL,
-                                        "Screen Recording Started",
+                                        "Screen Recording Initiated",
                                         ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Duration:** %s seconds\n**Action:** Screen recording initiated.")
                                             :format(name, ids.steam, ids.discord, ids.license, duration),
                                         39423
                                     )
                                     if cfg.Debug then
-                                        print(("[DEBUG] Server-side: Screen recording started for player %s (%d) for %d seconds. Webhook: %s"):format(name, src, duration, webhookURL))
+                                        print(("[DEBUG] Server-side: Screen recording command sent for player %s (%d) for %d seconds. Webhook: %s"):format(name, src, duration, webhookURL))
                                     end
                                 else
-                                    print(("[FIVEGUARD ERROR]: Fiveguard export 'RecordScreen' not found or Fiveguard not linked. Is Fiveguard properly started and named '%s'?"):format(tostring(fiveguardName)))
+                                    print(("[FIVEGUARD ERROR]: Fiveguard export 'recordPlayerScreen' not found or Fiveguard not linked. Is Fiveguard properly started and named '%s'?"):format(tostring(fiveguardName)))
                                 end
                             end)
 
