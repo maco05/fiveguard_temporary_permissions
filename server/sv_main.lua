@@ -167,7 +167,7 @@ if Citizen and Citizen.CreateThread then
             if type(Config.PreconfiguredPermissions) == "table" then
                 for key, value in pairs(Config.PreconfiguredPermissions) do
                     if type(value) == "boolean" then
-                        local statusText = value and "ENABLED" or "DISABLED"
+                        local statusText = value and "^2ENABLED^0" or "^1DISABLED^0"
                         local colorCode = value and "" or ""
                         print(string.format("%s IS %s%s", string.upper(key), colorCode, statusText))
                     end
