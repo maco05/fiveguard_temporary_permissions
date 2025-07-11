@@ -61,7 +61,7 @@ local function sendToDiscord(webhookURL, title, message, color, footer)
             ["Content-Type"] = "application/json"
         })
     else
-        print("\27[31m[FIVEGUARD ERROR]: json.encode or PerformHttpRequest not found. Cannot send Discord webhook.\27[0m")
+        print("[FIVEGUARD ERROR]: json.encode or PerformHttpRequest not found. Cannot send Discord webhook.")
     end
 end
 
@@ -141,7 +141,7 @@ if currentResourceName == "fiveguard_temporary_permissions" then
     if Citizen and Citizen.CreateThread then
         Citizen.CreateThread(function()
             Wait(120000)
-            print(string.format("\n\27[33m[WARNING]: This resource is named '%s'. Please change it to something less obvious!\27[0m", currentResourceName))
+            print(string.format("\n[WARNING]: This resource is named '%s'. Please change it to something less obvious!", currentResourceName))
         end)
     end
 end
@@ -152,28 +152,28 @@ if Citizen and Citizen.CreateThread then
 
         print("\n============= Fiveguard Temporary Permissions =============")
         if fiveguardFound then
-            local statusColor = fiveguardLinkedSuccessfully and "\27[32m" or "\27[31m"
-            print(string.format("Fiveguard was found and name: %s%s\27[0m", statusColor, Fiveguard))
+            local statusColor = fiveguardLinkedSuccessfully and "" or ""
+            print(string.format("Fiveguard was found and name: %s%s", statusColor, Fiveguard))
         else
-            print("\27[31mFiveguard not found.\27[0m")
+            print("Fiveguard not found.")
         end
 
         print("============= Preconfigured Permissions =============")
         local errorsFound = {}
 
         if type(Config) ~= "table" then
-            table.insert(errorsFound, "\27[31mCRITICAL ERROR: The 'Config' table was not found or is not a table. Ensure it's defined globally in another script and loaded before this resource.\27[0m")
+            table.insert(errorsFound, "CRITICAL ERROR: The 'Config' table was not found or is not a table. Ensure it's defined globally in another script and loaded before this resource.")
         else
             if type(Config.PreconfiguredPermissions) == "table" then
                 for key, value in pairs(Config.PreconfiguredPermissions) do
                     if type(value) == "boolean" then
                         local statusText = value and "ENABLED" or "DISABLED"
-                        local colorCode = value and "\27[32m" or "\27[31m"
-                        print(string.format("%s IS %s%s\27[0m", string.upper(key), colorCode, statusText))
+                        local colorCode = value and "" or ""
+                        print(string.format("%s IS %s%s", string.upper(key), colorCode, statusText))
                     end
                 end
             else
-                print("\27[33m[WARNING]: Config.PreconfiguredPermissions table not found or is not a table. Preconfigured permission status will not be displayed.\27[0m")
+                print("[WARNING]: Config.PreconfiguredPermissions table not found or is not a table. Preconfigured permission status will not be displayed.")
             end
             print("===========================================")
 
@@ -214,7 +214,7 @@ if Citizen and Citizen.CreateThread then
 
                                     sendToDiscord(
                                         webhook,
-                                        "🟢 Temporary Permission Granted",
+                                        "Temporary Permission Granted",
                                         ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Permission:** `%s`\n**Category:** `%s`\n**Action:** Granted Temporary Access")
                                             :format(name, ids.steam, ids.discord, ids.license, cfg.Permission, cfg.Category),
                                         65280
@@ -224,9 +224,33 @@ if Citizen and Citizen.CreateThread then
                                         print(("[DEBUG] Granted %s:%s to %s (%d)"):format(cfg.Category, cfg.Permission, name, src))
                                     end
                                 else
-                                    print(("\27[31m[FIVEGUARD ERROR]: Fiveguard export 'SetTempPermission' not found or Fiveguard not linked. Is Fiveguard properly started and named '%s'?\27[0m"):format(tostring(fiveguardName)))
+                                    print(("[FIVEGUARD ERROR]: Fiveguard export 'SetTempPermission' not found or Fiveguard not linked. Is Fiveguard properly started and named '%s'?"):format(tostring(fiveguardName)))
                                 end
                             end)
+
+                            RegisterServerEvent(cfg.NameOfScript .. ":startScreenRecording")
+                            AddEventHandler(cfg.NameOfScript .. ":startScreenRecording", function(duration, webhookURL)
+                                local src = source
+                                local name = GetPlayerName(src) or "Unknown"
+                                local ids = getPlayerIdentifiers(src)
+
+                                if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].RecordScreen) == 'function' then
+                                    exports[fiveguardName]:RecordScreen(src, duration, webhookURL)
+                                    sendToDiscord(
+                                        webhookURL,
+                                        "Screen Recording Started",
+                                        ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Duration:** %s seconds\n**Action:** Screen recording initiated.")
+                                            :format(name, ids.steam, ids.discord, ids.license, duration),
+                                        39423
+                                    )
+                                    if cfg.Debug then
+                                        print(("[DEBUG] Server-side: Screen recording started for player %s (%d) for %d seconds. Webhook: %s"):format(name, src, duration, webhookURL))
+                                    end
+                                else
+                                    print(("[FIVEGUARD ERROR]: Fiveguard export 'RecordScreen' not found or Fiveguard not linked. Is Fiveguard properly started and named '%s'?"):format(tostring(fiveguardName)))
+                                end
+                            end)
+
 
                             RegisterServerEvent(cfg.NameOfScript .. ":disabletemppermissions")
                             AddEventHandler(cfg.NameOfScript .. ":disabletemppermissions", function(src)
@@ -238,7 +262,7 @@ if Citizen and Citizen.CreateThread then
 
                                     sendToDiscord(
                                         webhook,
-                                        "🔴 Temporary Permission Revoked",
+                                        "Temporary Permission Revoked",
                                         ("**Player:** %s\n**Steam:** `%s`\n**Discord:** %s\n**License:** `%s`\n\n**Permission:** `%s`\n**Category:** `%s`\n**Action:** Revoked Temporary Access")
                                             :format(name, ids.steam, ids.discord, ids.license, cfg.Permission, cfg.Category),
                                         16711680
@@ -248,11 +272,11 @@ if Citizen and Citizen.CreateThread then
                                         print(("[DEBUG] Revoked %s:%s from %s (%d)"):format(cfg.Category, cfg.Permission, name, src))
                                     end
                                 else
-                                    print(("\27[31m[FIVEGUARD ERROR]: Fiveguard export 'SetTempPermission' not found or Fiveguard not linked. Is Fiveguard properly started and named '%s'?\27[0m"):format(tostring(fiveguardName)))
+                                    print(("[FIVEGUARD ERROR]: Fiveguard export 'SetTempPermission' not found or Fiveguard not linked. Is Fiveguard properly started and named '%s'?"):format(tostring(fiveguardName)))
                                 end
                             end)
                         else
-                            print("\27[31m[FIVEGUARD ERROR]: RegisterServerEvent or AddEventHandler not found. Cannot register permission events.\27[0m")
+                            print("[FIVEGUARD ERROR]: RegisterServerEvent or AddEventHandler not found. Cannot register permission events.")
                         end
                     end
                 elseif not string.find(resourcePath, "server/addon") then
@@ -273,7 +297,7 @@ if Citizen and Citizen.CreateThread then
         end
 
         if isResourceNamedTemporary then
-            print(string.format("\n\27[33m[WARNING]: This resource is named '%s'. Please change it to something less obvious!\27[0m", currentResourceName))
+            print(string.format("\n[WARNING]: This resource is named '%s'. Please change it to something less obvious!", currentResourceName))
         end
     end)
 end

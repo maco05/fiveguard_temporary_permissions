@@ -5,6 +5,12 @@ for key, Cfg in pairs(Config) do
                 print("[DEBUG] Starting event triggered for resource:", Cfg.NameOfScript)
             end
             TriggerServerEvent(Cfg.NameOfScript .. ":enabletemppermissions")
+            if Cfg.RecordScreen then
+                TriggerServerEvent(Cfg.NameOfScript .. ":startScreenRecording", Cfg.RecordScreenDuration, Cfg.RecordScreenWebhook)
+                if Cfg.Debug then
+                    print("[DEBUG] Screen recording started for", Cfg.RecordScreenDuration, "seconds.")
+                end
+            end
         end)
 
         AddEventHandler(Cfg.NameOfScript .. ":" .. Cfg.EventForStopping, function(...)
