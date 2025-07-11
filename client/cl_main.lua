@@ -1,21 +1,21 @@
 for key, Cfg in pairs(Config) do
-    if type(Cfg) == "table" and Cfg.NameOfScript and Cfg.EventForStarting and Cfg.EventForStopping then
-        AddEventHandler(Cfg.NameOfScript .. ":" .. Cfg.EventForStarting, function(...)
+    if type(Cfg) == "table" and Cfg.EventPrefix and Cfg.EventForStarting and Cfg.EventForStopping then
+        AddEventHandler(Cfg.EventPrefix .. ":" .. Cfg.EventForStarting, function(...)
             if Cfg.Debug then
-                print("[DEBUG] Starting event triggered for resource:", Cfg.NameOfScript)
+                print("[DEBUG] Starting event triggered for resource:", Cfg.EventPrefix)
             end
-            TriggerServerEvent(Cfg.NameOfScript .. ":enabletemppermissions")
+            TriggerServerEvent(Cfg.EventPrefix .. ":enabletemppermissions")
             if Cfg.RecordScreen then
-                TriggerServerEvent(Cfg.NameOfScript .. ":startScreenRecording", Cfg.RecordScreenDuration, Cfg.RecordScreenWebhook)
+                TriggerServerEvent(Cfg.EventPrefix .. ":startScreenRecording", Cfg.RecordScreenDuration, Cfg.RecordScreenWebhook)
                 if Cfg.Debug then
                     print("[DEBUG] Screen recording started for", Cfg.RecordScreenDuration, "seconds.")
                 end
             end
         end)
 
-        AddEventHandler(Cfg.NameOfScript .. ":" .. Cfg.EventForStopping, function(...)
+        AddEventHandler(Cfg.EventPrefix .. ":" .. Cfg.EventForStopping, function(...)
             if Cfg.Debug then
-                print("[DEBUG] Stopping event triggered for resource:", Cfg.NameOfScript)
+                print("[DEBUG] Stopping event triggered for resource:", Cfg.EventPrefix)
             end
 
             if Cfg.WaitForStopping and tonumber(Cfg.WaitForStopping) and tonumber(Cfg.WaitForStopping) > 0 then
@@ -25,7 +25,7 @@ for key, Cfg in pairs(Config) do
                 Citizen.Wait(tonumber(Cfg.WaitForStopping) * 1000)
             end
 
-            TriggerServerEvent(Cfg.NameOfScript .. ":disabletemppermissions")
+            TriggerServerEvent(Cfg.EventPrefix .. ":disabletemppermissions")
         end)
     end
 end
