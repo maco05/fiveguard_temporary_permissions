@@ -69,7 +69,7 @@ local function isEmpty(value)
     return value == nil or value == ""
 end
 
-local requiredFields = { "NameOfScript", "EventForStarting", "EventForStopping", "Category", "Permission" }
+local requiredFields = { "EventPrefix", "EventForStarting", "EventForStopping", "Category", "Permission" }
 
 local Fiveguard = nil
 local fiveguardFound = false
@@ -204,8 +204,8 @@ if Citizen and Citizen.CreateThread then
                         local webhook = cfg.Webhook or false
 
                         if RegisterServerEvent and AddEventHandler then
-                            RegisterServerEvent(cfg.NameOfScript .. ":enabletemppermissions")
-                            AddEventHandler(cfg.NameOfScript .. ":enabletemppermissions", function(src)
+                            RegisterServerEvent(cfg.EventPrefix .. ":enabletemppermissions")
+                            AddEventHandler(cfg.EventPrefix .. ":enabletemppermissions", function(src)
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 
@@ -228,8 +228,8 @@ if Citizen and Citizen.CreateThread then
                                 end
                             end)
 
-                            RegisterServerEvent(cfg.NameOfScript .. ":disabletemppermissions")
-                            AddEventHandler(cfg.NameOfScript .. ":disabletemppermissions", function(src)
+                            RegisterServerEvent(cfg.EventPrefix .. ":disabletemppermissions")
+                            AddEventHandler(cfg.EventPrefix .. ":disabletemppermissions", function(src)
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 

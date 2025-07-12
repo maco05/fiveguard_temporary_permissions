@@ -1,6 +1,6 @@
 Config = {
     [""] = { -- Replace this with a unique name
-        NameOfScript = "", -- Replace with the name of your script (used as event prefix)
+        EventPrefix = "", -- Replace with the name of your script (used as event prefix)
         EventForStarting = "", -- Client-side event that starts the action that requires temp permissions (e.g., "openShowroom")
         WaitForStopping = 0, -- Time in seconds to wait before stopping the action (e.g., 5)
         EventForStopping = "", -- Client-side event that stops the action (e.g., "closeShowroom")
