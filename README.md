@@ -28,4 +28,4 @@ Simply enable config options if using any listed resources bellow.
 
 # Credits
 
-The script has been brought to you by the one and only unique FiveM anticheat, [fiveguard.net](https://fiveguard.net/) [Discord](https://www.discord.gg/fiveguard) Create by maco_05. Also thanks to [OffSey](https://github.com/OffSey/) for help with preconfigured permissions like RTX Themepark, Rcore Clothing and Rcore LunaPark.
+The script has been brought to you by the one and only unique FiveM anticheat, [fiveguard.net](https://fiveguard.net/) [Discord](https://www.discord.gg/fiveguard) Create by maco_05. Also thanks to [OffSey](https://github.com/OffSey/) and [Jeakels](https://github.com/jeakels) for help with preconfigured permissions like RTX Themepark, Rcore Clothing and Rcore LunaPark.
