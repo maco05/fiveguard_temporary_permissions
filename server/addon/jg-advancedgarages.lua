@@ -1,17 +1,29 @@
-if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.JGAdvancedGarages == true then
-    RegisterServerEvent("jg-advancedgarages:enabletemppermissions")
-    AddEventHandler("jg-advancedgarages:enabletemppermissions", function()
+if Config.JGAdvancedGarages == true then
+
+    RegisterServerEvent("jg-dealerships:enabletemppermissions")
+    AddEventHandler("jg-dealerships:enabletemppermissions", function()
         local src = source
-        if Fiveguard and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == "function" then
-            exports[Fiveguard]:SetTempPermission(src, "Vehicle", "BypassVehicleModifier", true, false)
-        end
+        exports[Config.FiveguardName]:SetTempPermission(
+            src,                         -- Player source
+            "Vehicle",                    -- Category
+            "BypassVehicleModifier",         -- Permission
+            true,                        -- Allow?
+            false                        -- Ignore static permissions
+        )
     end)
 
-    RegisterServerEvent("jg-advancedgarages:disabletemppermissions")
-    AddEventHandler("jg-advancedgarages:disabletemppermissions", function()
+    RegisterServerEvent("jg-dealerships:disabletemppermissions")
+    AddEventHandler("jg-dealerships:disabletemppermissions", function()
         local src = source
-        if Fiveguard and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == "function" then
-            exports[Fiveguard]:SetTempPermission(src, "Vehicle", "BypassVehicleModifier", false, false)
-        end
+        exports[Config.FiveguardName]:SetTempPermission(
+            src,                         -- Player source
+            "Vehicle",                    -- Category
+            "BypassVehicleModifier",         -- Permission
+            false,                        -- Allow?
+            false                        -- Ignore static permissions
+        )
     end)
 end
+
+if Config.JGAdvancedGarages == false then
+end    

@@ -1,19 +1,43 @@
-if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.JGDealerships == true then
+if Config.JGDealerships == true then
+
     RegisterServerEvent("jg-dealerships:enabletemppermissions")
     AddEventHandler("jg-dealerships:enabletemppermissions", function()
         local src = source
-        if Fiveguard and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == "function" then
-            exports[Fiveguard]:SetTempPermission(src, "Client", "BypassInvisible", true, false)
-            exports[Fiveguard]:SetTempPermission(src, "Client", "BypassTeleport", true, false)
-        end
+        exports[Config.FiveguardName]:SetTempPermission(
+            src,                         -- Player source
+            "Client",                    -- Category
+            "BypassInvisible",         -- Permission
+            true,                        -- Allow?
+            false                        -- Ignore static permissions
+        )
+         exports[Config.FiveguardName]:SetTempPermission(
+            src,
+            "Client",
+            "BypassTeleport",
+            true,
+            false
+        )
     end)
 
     RegisterServerEvent("jg-dealerships:disabletemppermissions")
     AddEventHandler("jg-dealerships:disabletemppermissions", function()
         local src = source
-        if Fiveguard and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == "function" then
-            exports[Fiveguard]:SetTempPermission(src, "Client", "BypassInvisible", false, false)
-            exports[Fiveguard]:SetTempPermission(src, "Client", "BypassTeleport", false, false)
-        end
+        exports[Config.FiveguardName]:SetTempPermission(
+            src,                         -- Player source
+            "Client",                    -- Category
+            "BypassInvisible",         -- Permission
+            false,                        -- Allow?
+            false                        -- Ignore static permissions
+        )
+        exports[Config.FiveguardName]:SetTempPermission(
+            src,
+            "Client",
+            "BypassTeleport",
+            false,
+            false
+        )
     end)
 end
+
+if Config.JGDealerships == false then
+end    

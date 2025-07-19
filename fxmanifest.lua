@@ -3,16 +3,16 @@ game 'gta5'
 
 author 'maco_05'
 description 'Simple to use addon to manage temporary permissions for fiveguard'
-version '2.1.8'
+version '2.1.4'
 
 shared_script 'config.lua'
 
 client_scripts {
-    'client/cl_main.lua',
+    'client/client.lua',
     'client/addon/*.lua'
 }
 
 server_scripts {
-    'server/sv_main.lua',
+    'server/server.lua',
     'server/addon/*.lua'
 }

@@ -16,12 +16,11 @@ Setup temporary permissions for every resource that is causing false bans.
 
 **Preconfigured temporany permissions**
 
-Simply enable config options if using any listed resources bellow.
+Prevent bans and allow your players to get fun without making your code for temporany permissions
 
 - JG-Dealerships
 - JG-Advanced Garages
 - Rcore Prison
-- Lunar Garage
 - RTX Themepark
 - Rcore Clothing
 - Rcore LunaPark

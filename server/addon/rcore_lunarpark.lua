@@ -1,17 +1,29 @@
-if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.RcoreLunarPark == true then
+if Config.RcoreLunarPark == true then
+
     RegisterServerEvent("rcore_lunarpark:enabletemppermissions")
     AddEventHandler("rcore_lunarpark:enabletemppermissions", function()
         local src = source
-        if Fiveguard and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == "function" then
-            exports[Fiveguard]:SetTempPermission(src, "Client", "BypassNoclip", true, false)
-        end
+        exports[Config.FiveguardName]:SetTempPermission(
+            src,                         -- Player source
+            "Client",                    -- Category
+            "BypassNoclip",         -- Permission
+            true,                        -- Allow?
+            false                        -- Ignore static permissions
+        )
     end)
 
     RegisterServerEvent("rcore_lunarpark:disabletemppermissions")
     AddEventHandler("rcore_lunarpark:disabletemppermissions", function()
         local src = source
-        if Fiveguard and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == "function" then
-            exports[Fiveguard]:SetTempPermission(src, "Client", "BypassNoclip", false, false)
-        end
+        exports[Config.FiveguardName]:SetTempPermission(
+            src,
+            "Client",
+            "BypassNoclip",
+            false,
+            false
+        )
     end)
 end
+
+if Config.RcoreLunarPark == false then
+end    

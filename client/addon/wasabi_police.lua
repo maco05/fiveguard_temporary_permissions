@@ -1,5 +1,0 @@
-AddEventHandler("wasabi_police:sendToJail", function()
-    TriggerServerEvent("wasabi_police:enabletemppermissions")
-    Wait(5000)
-    TriggerServerEvent("wasabi_police:disabletemppermissions")
-end)
