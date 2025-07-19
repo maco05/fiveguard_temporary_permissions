@@ -2,27 +2,28 @@ if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPerm
     RegisterServerEvent("jg-advancedgarages:enabletemppermissions")
     AddEventHandler("jg-advancedgarages:enabletemppermissions", function()
         local src = source
-        exports[Config.FiveguardName]:SetTempPermission(
-            src,
-            "Vehicle",
-            "BypassVehicleModifier",
-            true,
-            false
-        )
+        if Fiveguard and exports and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == 'function' then
+            exports[Fiveguard]:SetTempPermission(
+                src,
+                "Vehicle",
+                "BypassVehicleModifier",
+                true,
+                false
+            )
+        end
     end)
 
     RegisterServerEvent("jg-advancedgarages:disabletemppermissions")
     AddEventHandler("jg-advancedgarages:disabletemppermissions", function()
         local src = source
-        exports[Config.FiveguardName]:SetTempPermission(
-            src,
-            "Vehicle",
-            "BypassVehicleModifier",
-            false,
-            false
-        )
+        if Fiveguard and exports and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == 'function' then
+            exports[Fiveguard]:SetTempPermission(
+                src,
+                "Vehicle",
+                "BypassVehicleModifier",
+                false,
+                false
+            )
+        end
     end)
-end
-
-if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.JGAdvancedGarages == false then
 end

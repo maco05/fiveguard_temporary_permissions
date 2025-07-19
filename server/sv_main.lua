@@ -110,8 +110,25 @@ if Fiveguard then
     local attempts = 1
     ::recheckFG::
     if GetResourceState and GetResourceState(Fiveguard) == 'started' then
-        print('Fiveguard linked ^2successfully^0!')
-        fiveguardLinkedSuccessfully = true
+        -- Add a check for the specific export before declaring success
+        local exportAvailable = false
+        local checkAttempts = 0
+        while not exportAvailable and checkAttempts < 50 do -- Wait up to 5 seconds for the export
+            if exports and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == 'function' then
+                exportAvailable = true
+                break
+            end
+            Wait(100)
+            checkAttempts = checkAttempts + 1
+        end
+
+        if exportAvailable then
+            print('Fiveguard linked ^2successfully^0!')
+            fiveguardLinkedSuccessfully = true
+        else
+            print(('\27[31mFiveguard resource started, but export "SetTempPermission" not found after multiple attempts for %s. Ensure Fiveguard is fully loaded and its exports are accessible.\27[0m'):format(Fiveguard))
+            fiveguardLinkedSuccessfully = false
+        end
     else
         if StartResource then
             StartResource(Fiveguard)
@@ -209,6 +226,7 @@ if Citizen and Citizen.CreateThread then
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 
+                                -- ONLY CALL EXPORT IF fiveguardLinkedSuccessfully IS TRUE AND THE EXPORT IS ACTUALLY A FUNCTION
                                 if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].SetTempPermission) == 'function' then
                                     exports[fiveguardName]:SetTempPermission(src, cfg.Category, cfg.Permission, true, cfg.IgnoreStaticPermissions)
 
@@ -233,6 +251,7 @@ if Citizen and Citizen.CreateThread then
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 
+                                -- ONLY CALL EXPORT IF fiveguardLinkedSuccessfully IS TRUE AND THE EXPORT IS ACTUALLY A FUNCTION
                                 if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].SetTempPermission) == 'function' then
                                     exports[fiveguardName]:SetTempPermission(src, cfg.Category, cfg.Permission, false, cfg.IgnoreStaticPermissions)
 
