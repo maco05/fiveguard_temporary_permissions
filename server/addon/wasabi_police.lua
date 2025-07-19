@@ -1,6 +1,6 @@
-if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.JGDealerships == true then
-    RegisterServerEvent("jg-dealerships:enabletemppermissions")
-    AddEventHandler("jg-dealerships:enabletemppermissions", function()
+if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPermissions.WasabiPolice == true then
+    RegisterServerEvent("wasabi_police:enabletemppermissions")
+    AddEventHandler("wasabi_police:enabletemppermissions", function()
         local src = source
         if Fiveguard and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == "function" then
             exports[Fiveguard]:SetTempPermission(src, "Client", "BypassInvisible", true, false)
@@ -8,8 +8,8 @@ if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPerm
         end
     end)
 
-    RegisterServerEvent("jg-dealerships:disabletemppermissions")
-    AddEventHandler("jg-dealerships:disabletemppermissions", function()
+    RegisterServerEvent("wasabi_police:disabletemppermissions")
+    AddEventHandler("wasabi_police:disabletemppermissions", function()
         local src = source
         if Fiveguard and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == "function" then
             exports[Fiveguard]:SetTempPermission(src, "Client", "BypassInvisible", false, false)

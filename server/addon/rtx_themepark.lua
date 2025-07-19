@@ -2,28 +2,10 @@ if type(Config.PreconfiguredPermissions) == "table" and Config.PreconfiguredPerm
     RegisterServerEvent("rtx_themepark:enabletemppermissions")
     AddEventHandler("rtx_themepark:enabletemppermissions", function()
         local src = source
-        if Fiveguard and exports and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == 'function' then
-            exports[Fiveguard]:SetTempPermission(
-                src,
-                "Client",
-                "BypassNoclip",
-                true,
-                false
-            )
-            exports[Fiveguard]:SetTempPermission(
-                src,
-                "Misc",
-                "BypassSpoofedWeapons",
-                true,
-                false
-            )
-            exports[Fiveguard]:SetTempPermission(
-                src,
-                "Vehicle",
-                "BypassBulletproofTires",
-                true,
-                false
-            )
+        if exports[Config.FiveguardName] and type(exports[Config.FiveguardName].SetTempPermission) == "function" then
+            exports[Config.FiveguardName]:SetTempPermission(src, "Client", "BypassNoclip", true, false)
+            exports[Config.FiveguardName]:SetTempPermission(src, "Misc", "BypassSpoofedWeapons", true, false)
+            exports[Config.FiveguardName]:SetTempPermission(src, "Vehicle", "BypassBulletproofTires", true, false)
         end
     end)
 end

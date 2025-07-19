@@ -1,6 +1,6 @@
 Config = {
     [""] = { -- Replace this with a unique name
-        EventPrefix = "", -- Replace with the name of your script (used as event prefix)
+        NameOfScript = "", -- Replace with the name of your script (used as event prefix)
         EventForStarting = "", -- Client-side event that starts the action that requires temp permissions (e.g., "openShowroom")
         WaitForStopping = 0, -- Time in seconds to wait before stopping the action (e.g., 5)
         EventForStopping = "", -- Client-side event that stops the action (e.g., "closeShowroom")
@@ -17,11 +17,12 @@ Config.FiveguardName = "auto"
 
 -- Preconfigured temporary permissions are now inside a sub-table
 Config.PreconfiguredPermissions = {
-    JGDealerships = true, -- Set true if using jg-dealerships
+    JGDealerships = false, -- Set true if using jg-dealerships
     JGAdvancedGarages = false, -- Set true if using jg-advancedgarages
     RcorePrison = false, -- Set true if using rcore_prison
     LunarGarage = false, -- Set true if using Lunar Garage
     RcoreClothing = false, -- Set true if using Rcore_Clothing
     RcoreLunarPark = false, -- Set true if using Rcore_LunarPark
-    RTXThemePark = false -- Set true if using RTX_Theme_Park
+    RTXThemePark = false, -- Set true if using RTX_Theme_Park
+    WasabiPolice = false -- Set true if using Wasabi_Police
 }

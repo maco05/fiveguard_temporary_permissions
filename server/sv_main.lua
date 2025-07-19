@@ -69,7 +69,7 @@ local function isEmpty(value)
     return value == nil or value == ""
 end
 
-local requiredFields = { "EventPrefix", "EventForStarting", "EventForStopping", "Category", "Permission" }
+local requiredFields = { "NameOfScript", "EventForStarting", "EventForStopping", "Category", "Permission" }
 
 local Fiveguard = nil
 local fiveguardFound = false
@@ -110,25 +110,8 @@ if Fiveguard then
     local attempts = 1
     ::recheckFG::
     if GetResourceState and GetResourceState(Fiveguard) == 'started' then
-        -- Add a check for the specific export before declaring success
-        local exportAvailable = false
-        local checkAttempts = 0
-        while not exportAvailable and checkAttempts < 50 do -- Wait up to 5 seconds for the export
-            if exports and exports[Fiveguard] and type(exports[Fiveguard].SetTempPermission) == 'function' then
-                exportAvailable = true
-                break
-            end
-            Wait(100)
-            checkAttempts = checkAttempts + 1
-        end
-
-        if exportAvailable then
-            print('Fiveguard linked ^2successfully^0!')
-            fiveguardLinkedSuccessfully = true
-        else
-            print(('\27[31mFiveguard resource started, but export "SetTempPermission" not found after multiple attempts for %s. Ensure Fiveguard is fully loaded and its exports are accessible.\27[0m'):format(Fiveguard))
-            fiveguardLinkedSuccessfully = false
-        end
+        print('Fiveguard linked ^2successfully^0!')
+        fiveguardLinkedSuccessfully = true
     else
         if StartResource then
             StartResource(Fiveguard)
@@ -221,12 +204,11 @@ if Citizen and Citizen.CreateThread then
                         local webhook = cfg.Webhook or false
 
                         if RegisterServerEvent and AddEventHandler then
-                            RegisterServerEvent(cfg.EventPrefix .. ":enabletemppermissions")
-                            AddEventHandler(cfg.EventPrefix .. ":enabletemppermissions", function(src)
+                            RegisterServerEvent(cfg.NameOfScript .. ":enabletemppermissions")
+                            AddEventHandler(cfg.NameOfScript .. ":enabletemppermissions", function(src)
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 
-                                -- ONLY CALL EXPORT IF fiveguardLinkedSuccessfully IS TRUE AND THE EXPORT IS ACTUALLY A FUNCTION
                                 if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].SetTempPermission) == 'function' then
                                     exports[fiveguardName]:SetTempPermission(src, cfg.Category, cfg.Permission, true, cfg.IgnoreStaticPermissions)
 
@@ -246,12 +228,11 @@ if Citizen and Citizen.CreateThread then
                                 end
                             end)
 
-                            RegisterServerEvent(cfg.EventPrefix .. ":disabletemppermissions")
-                            AddEventHandler(cfg.EventPrefix .. ":disabletemppermissions", function(src)
+                            RegisterServerEvent(cfg.NameOfScript .. ":disabletemppermissions")
+                            AddEventHandler(cfg.NameOfScript .. ":disabletemppermissions", function(src)
                                 local name = GetPlayerName(src) or "Unknown"
                                 local ids = getPlayerIdentifiers(src)
 
-                                -- ONLY CALL EXPORT IF fiveguardLinkedSuccessfully IS TRUE AND THE EXPORT IS ACTUALLY A FUNCTION
                                 if fiveguardLinkedSuccessfully and exports and exports[fiveguardName] and type(exports[fiveguardName].SetTempPermission) == 'function' then
                                     exports[fiveguardName]:SetTempPermission(src, cfg.Category, cfg.Permission, false, cfg.IgnoreStaticPermissions)
 

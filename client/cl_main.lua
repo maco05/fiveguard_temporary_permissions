@@ -1,15 +1,15 @@
 for key, Cfg in pairs(Config) do
-    if type(Cfg) == "table" and Cfg.EventPrefix and Cfg.EventForStarting and Cfg.EventForStopping then
-        AddEventHandler(Cfg.EventPrefix .. ":" .. Cfg.EventForStarting, function(...)
+    if type(Cfg) == "table" and Cfg.NameOfScript and Cfg.EventForStarting and Cfg.EventForStopping then
+        AddEventHandler(Cfg.NameOfScript .. ":" .. Cfg.EventForStarting, function(...)
             if Cfg.Debug then
-                print("[DEBUG] Starting event triggered for resource:", Cfg.EventPrefix)
+                print("[DEBUG] Starting event triggered for resource:", Cfg.NameOfScript)
             end
-            TriggerServerEvent(Cfg.EventPrefix .. ":enabletemppermissions")
+            TriggerServerEvent(Cfg.NameOfScript .. ":enabletemppermissions")
         end)
 
-        AddEventHandler(Cfg.EventPrefix .. ":" .. Cfg.EventForStopping, function(...)
+        AddEventHandler(Cfg.NameOfScript .. ":" .. Cfg.EventForStopping, function(...)
             if Cfg.Debug then
-                print("[DEBUG] Stopping event triggered for resource:", Cfg.EventPrefix)
+                print("[DEBUG] Stopping event triggered for resource:", Cfg.NameOfScript)
             end
 
             if Cfg.WaitForStopping and tonumber(Cfg.WaitForStopping) and tonumber(Cfg.WaitForStopping) > 0 then
@@ -19,7 +19,7 @@ for key, Cfg in pairs(Config) do
                 Citizen.Wait(tonumber(Cfg.WaitForStopping) * 1000)
             end
 
-            TriggerServerEvent(Cfg.EventPrefix .. ":disabletemppermissions")
+            TriggerServerEvent(Cfg.NameOfScript .. ":disabletemppermissions")
         end)
     end
 end
