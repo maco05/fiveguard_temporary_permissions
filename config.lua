@@ -2,6 +2,7 @@ Config = {
     [""] = { -- Replace this with a unique name
         NameOfScript = "", -- Replace with the name of your script (used as event prefix)
         EventForStarting = "", -- Client-side event that starts the action that requires temp permissions (e.g., "openShowroom")
+        WaitForStopping = 0, -- Time in seconds to wait before stopping the action (e.g., 5 seconds)
         EventForStopping = "", -- Client-side event that stops the action (e.g., "closeShowroom")
         Category = "", -- The permission category to set (e.g., "Client", "AdminMenu", etc.). All categories can be found here: https://docs.fiveguard.net/permission-system/ace-permissions
         Permission = "", -- The specific permission within the category (e.g., "BypassNoclip", "AdminMenuAccess", etc.) All permissions can be found here: https://docs.fiveguard.net/permission-system/ace-permissions

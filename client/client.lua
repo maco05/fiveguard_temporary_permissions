@@ -9,9 +9,21 @@ for key, Cfg in pairs(Config) do
 
         AddEventHandler(Cfg.NameOfScript .. ":" .. Cfg.EventForStopping, function(...)
             if Cfg.Debug then
-                print("[DEBUG] Stopping event triggered for resource:", Cfg.NameOfScript)
+                print(string.format(
+                    "[DEBUG] Stopping event triggered for resource: %s (Wait: %s seconds)",
+                    Cfg.NameOfScript,
+                    Cfg.WaitForStopping or 0
+                ))
             end
-            TriggerServerEvent(Cfg.NameOfScript .. ":disabletemppermissions")
+
+            local waitTime = tonumber(Cfg.WaitForStopping) or 0
+            if waitTime > 0 then
+                Citizen.SetTimeout(waitTime * 1000, function()
+                    TriggerServerEvent(Cfg.NameOfScript .. ":disabletemppermissions")
+                end)
+            else
+                TriggerServerEvent(Cfg.NameOfScript .. ":disabletemppermissions")
+            end
         end)
     end
 end
